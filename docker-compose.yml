@@ -1,0 +1,29 @@
+version: '3'
+services:
+  api:
+    build: .
+    networks:
+      - backend
+
+
+  db:
+    image: mariadb:10.4
+    environment:
+      MYSQL_ROOT_PASSWORD: mypass
+      MYSQL_DATABASE: forms
+      MYSQL_USER: forms
+      MYSQL_PASSWORD: mypass
+    logging:
+      driver: syslog
+      options:
+        tag: "{{.DaemonName}}(image={{.ImageName}};name={{.Name}};id={{.ID}})"
+    networks:
+      - backend
+    restart: on-failure
+    ports:
+      - '3306:3306'
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
