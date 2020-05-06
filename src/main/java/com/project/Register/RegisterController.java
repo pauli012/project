@@ -1,6 +1,6 @@
 package com.project.Register;
 
-import com.project.DuplicatedDataException;
+import com.project.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,26 +9,25 @@ import java.util.List;
 @RestController
 public class RegisterController {
     @Autowired
-    private RegisterService RegisterService;
+    private RegisterService registerService;
 
-    @RequestMapping("/register")
+    @RequestMapping("/registers")
     public List<Register> getAllRegister() {
-        return RegisterService.getAllRegister();
+        return registerService.getAllRegister();
     }
 
     @RequestMapping("/register/{id}")
     public Register getRegister(@PathVariable String id) {
-        return RegisterService.getRegister(id);
+        return registerService.getRegister(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/register")
-    public void addRegister(@RequestBody Register register) throws DuplicatedDataException {
-        RegisterService.addRegister(register);
+    @RequestMapping(method = RequestMethod.GET, value = "/register")
+    public String getRegister() throws DataException {
+        return registerService.addRegister();
     }
-
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/register/{id}")
     public void deleteRegister(@PathVariable String id) {
-        RegisterService.deleteRegister(id);
+        registerService.deleteRegister(id);
     }
 }
