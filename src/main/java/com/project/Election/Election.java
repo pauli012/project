@@ -1,5 +1,8 @@
 package com.project.Election;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,37 +16,24 @@ public class Election {
 
     @Id
     @GeneratedValue
+    @Getter
+    @Setter
     private Integer id;
-    private String firstPlace;
-    private String secoundPlace;
-    private String thirdPlace;
-    private String pesel;
+    @Getter @Setter private String firstPlace;
+    @Getter @Setter private String secoundPlace;
+    @Getter @Setter private String thirdPlace;
+    @Getter @Setter private String token;
 
     public Election() {
 
     }
-    public Election(int id, String firstPlace,String secoundPlace, String thirdPlace, String pesel) {
+
+    public Election(int id, String firstPlace, String secoundPlace, String thirdPlace, String token) {
         super();
         this.id = id;
         this.firstPlace = firstPlace;
         this.secoundPlace = secoundPlace;
         this.thirdPlace = thirdPlace;
-        this.pesel = pesel;
+        this.token = token;
     }
-    public String getPesel() {
-        return pesel;
-    }
-
-    public String getFirstPlace() {
-        return firstPlace;
-    }
-
-    public String getSecoundPlace() {
-        return secoundPlace;
-    }
-
-    public String getThirdPlace() {
-        return thirdPlace;
-    }
-
 }

@@ -1,21 +1,11 @@
 package com.project.Election;
 
-import com.project.DuplicatedDataException;
-import com.project.Election.Election;
-import com.project.Election.ElectionRepository;
-import com.project.Register.Register;
+import com.project.DataException;
 import com.project.Register.RegisterRepository;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.persistence.Entity;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,28 +22,38 @@ public class ElectionService {
     public ElectionService() {
     }
 
-    public List<Election> getAllElection() {
-        List<Election> e = new ArrayList<>();
-        electionRepository.findAll()
-                .forEach(e::add);
+    public List<ElectionDTO> getAllElection() {
+        List<ElectionDTO> e = new ArrayList<ElectionDTO>();
+        for (Election iterElection : electionRepository.findAll()) {
+            ModelMapper modelMapper = new ModelMapper();
+            ElectionDTO eDTO = modelMapper.map(iterElection, ElectionDTO.class);
+            // ElectionDTO eDTO = new ElectionDTO();
+            //   eDTO.setId(iterElection.getID());
+            //    eDTO.setFirstPlace(iterElection.getFirstPlace());
+            //  eDTO.setSecoundPlace(iterElection.getSecoundPlace());
+            //  eDTO.setThirdPlace(iterElection.getThirdPlace());
+            e.add(eDTO);
+
+        }
         return e;
     }
 
-    public ResponseEntity<?> getElection(int id) {
+    public Map<String, Integer> getElection(int id) {
         Map map = new HashMap<>();
 
         map.put("firstProject", electionRepository.findById(id).orElse(null).getFirstPlace());
         map.put("secondProject", electionRepository.findById(id).orElse(null).getSecoundPlace());
-        return (new ResponseEntity<>(map, HttpStatus.OK));
+        map.put("thirdProject", electionRepository.findById(id).orElse(null).getThirdPlace());
+        return map;
     }
 
-    public void addElection(Election election) throws DuplicatedDataException {
-        if (registerRepository.findById(election.getPesel()).orElse(null) == null) {
-            throw new DuplicatedDataException("REGISTER TO ADD A VOTE!");
+    public void addElection(Election election) throws DataException {
+        if (registerRepository.findById(election.getToken()).orElse(null) == null) {
+            throw new DataException("REGISTER TO ADD A VOTE!");
         }
         for (Election iterElection : electionRepository.findAll()) {
-            if (election.getPesel().equals(iterElection.getPesel())) {
-                throw new DuplicatedDataException("YOU HAVE BEEN VOTED!");
+            if (election.getToken().equals(iterElection.getToken())) {
+                throw new DataException("YOU HAVE BEEN VOTED!");
             }
 
         }
@@ -62,43 +62,4 @@ public class ElectionService {
 
     }
 
-    public String getResults() {
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        for (Election iterElection : electionRepository.findAll()) {
-
-            if (map.containsKey(iterElection.getFirstPlace())) {
-                System.out.println(map.get(iterElection.getFirstPlace()));
-                map.replace(iterElection.getFirstPlace(), map.get(iterElection.getFirstPlace()) + 3);
-                System.out.println("!!3");
-                System.out.println(map.get(iterElection.getFirstPlace()));
-            }
-            if (map.containsKey(iterElection.getSecoundPlace())) {
-                map.replace(iterElection.getSecoundPlace(), map.get(iterElection.getSecoundPlace()) + 2);
-                System.out.println("!!2");
-            }
-            if (map.containsKey(iterElection.getThirdPlace())) {
-                map.replace(iterElection.getThirdPlace(), map.get(iterElection.getThirdPlace()) + 1);
-                System.out.println("!!1");
-            }
-            System.out.println(iterElection.getFirstPlace());
-            System.out.println(iterElection.getSecoundPlace());
-            System.out.println(iterElection.getThirdPlace());
-            if (!map.containsKey(iterElection.getFirstPlace())) {
-                map.put(iterElection.getFirstPlace(), 3);
-                System.out.println("3");
-                System.out.println(map.get(iterElection.getFirstPlace()));
-            }
-            if (!map.containsKey(iterElection.getSecoundPlace())) {
-                map.put(iterElection.getSecoundPlace(), 2);
-                System.out.println("2");
-            }
-            if (!map.containsKey(iterElection.getThirdPlace())) {
-                map.put(iterElection.getThirdPlace(), 1);
- 
-            }
-            System.out.println(map);
-        }
-        return map.toString();
-
-    }
 }
