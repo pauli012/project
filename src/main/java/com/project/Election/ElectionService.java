@@ -27,11 +27,6 @@ public class ElectionService {
         for (Election iterElection : electionRepository.findAll()) {
             ModelMapper modelMapper = new ModelMapper();
             ElectionDTO eDTO = modelMapper.map(iterElection, ElectionDTO.class);
-            // ElectionDTO eDTO = new ElectionDTO();
-            //   eDTO.setId(iterElection.getID());
-            //    eDTO.setFirstPlace(iterElection.getFirstPlace());
-            //  eDTO.setSecoundPlace(iterElection.getSecoundPlace());
-            //  eDTO.setThirdPlace(iterElection.getThirdPlace());
             e.add(eDTO);
 
         }
