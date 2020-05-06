@@ -1,6 +1,6 @@
 package com.project.Election;
 
-import com.project.DataException;
+import com.project.Exception.DataException;
 import com.project.Register.RegisterRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

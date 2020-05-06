@@ -1,6 +1,6 @@
 package com.project.Election;
 
-import com.project.DataException;
+import com.project.Exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
