@@ -1,25 +1,18 @@
 package com.project.Register;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Register {
     @Id
     @Getter
-    @Setter
     private String token;
 
-    public Register() {
-
-    }
-
-    public Register(String token) {
-        super();
-        this.token = token;
-
-    }
 }
