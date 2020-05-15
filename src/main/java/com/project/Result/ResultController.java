@@ -9,11 +9,11 @@ import java.util.Map;
 @RestController
 public class ResultController {
     @Autowired
-    private com.project.Result.ResultService ResultService;
+    private ResultService resultService;
 
     @RequestMapping("/results")
     public Map<String,Integer> getResults() {
-        return ResultService.getResults();
+        return resultService.getResults();
     }
 }
 
